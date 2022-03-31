@@ -2,9 +2,7 @@
 // 22.02.2017
 package dictionary;
 
-import java.util.Comparator;
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 
 /**
  * Implementation of the Dictionary interface as AVL tree.
@@ -17,7 +15,7 @@ import java.util.NoSuchElementException;
  * @param <K> Key.
  * @param <V> Value.
  */
-public class BinaryTreeDictionary<K, V> implements Dictionary<K, V> {
+public class BinaryTreeDictionary<K extends Comparable<? super K>, V> implements Dictionary<K, V>{
 
     static private class Node<K, V> {
         K key;
@@ -38,35 +36,96 @@ public class BinaryTreeDictionary<K, V> implements Dictionary<K, V> {
     }
     
     private Node<K, V> root = null;
+    private V tempValue;
     private int size = 0;
 
     @Override
     public V insert(K key, V value) {
-        return insertR(root, key, value);
+        root = insertRecursive(root, key, value);
+        root.parent = null;
+        size++;
+        return tempValue;
     }
 
-    private V insertR(Node<K, V> n, K key, V value) {
-        if (n == null) {
-            n = new Node<>(key, value);
-            return null;
+    private Node<K, V> insertRecursive(Node<K, V> currentNode, K key, V value) {
+        if (currentNode == null) {
+            currentNode = new Node<>(key, value);
+            tempValue = null;
+        } else if (key.compareTo(currentNode.key) < 0) {
+            currentNode.left = insertRecursive(currentNode.left, key, value);
+            currentNode.left.parent = currentNode;
+        } else if (key.compareTo(currentNode.key) > 0) {
+            currentNode.right = insertRecursive(currentNode.right, key, value);
+            currentNode.right.parent = currentNode;
+        } else {
+            tempValue = currentNode.value;
+            currentNode.value = value;
         }
-
-        if ()
+        return currentNode;
     }
 
     @Override
     public V search(K key) {
-        return null;
+        return searchRecursive(root, key);
+    }
+
+    private V searchRecursive(Node<K, V> currentNode, K key) {
+        if (currentNode == null)
+            return null;
+        if (key.compareTo(currentNode.key) < 0) {
+            return searchRecursive(currentNode.left, key);
+        } else if (key.compareTo(currentNode.key) > 0) {
+            return searchRecursive(currentNode.right, key);
+        } else {
+            return currentNode.value;
+        }
     }
 
     @Override
     public V remove(K key) {
-        return null;
+        root = removeRecursive(root, key);
+        size--;
+        return tempValue;
+    }
+
+    private Node<K, V> removeRecursive(Node<K, V> currentNode, K key) {
+        // Basisfall: Tree ist leer
+        if (currentNode == null)
+            tempValue = null;
+
+        // Zur Node navigieren die entfernt werden soll
+        else if (key.compareTo(currentNode.key) < 0) {
+            currentNode.left = removeRecursive(currentNode.left, key);
+        } else if (key.compareTo(currentNode.key) > 0) {
+            currentNode.right = removeRecursive(currentNode.right, key);
+        }
+
+        // Entfernen der Node, wenn mindestens eins der Children null ist
+        else if (currentNode.left == null)
+            return currentNode.right;
+        else if (currentNode.right == null)
+            return currentNode.left;
+
+        // Entfernen der Node, wenn beide Children nicht null sind
+        else {
+            Node successorParent = currentNode;
+            Node successor = minNode(currentNode.right);
+            if ()
+
+        }
+
+        return currentNode;
+    }
+
+    private Node<K, V> minNode(Node<K, V> currentNode) {
+        if (currentNode.left != null)
+            return minNode(currentNode.left);
+        return currentNode;
     }
 
     @Override
     public int size() {
-        return 0;
+        return size;
     }
 
     @Override

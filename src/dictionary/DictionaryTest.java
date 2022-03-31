@@ -23,13 +23,13 @@ public class DictionaryTest {
 	}
 
 	private static void testSortedArrayDictionary() {
-		Dictionary<String, String> dict = new SortedArrayDictionary<>();
-		testDict(dict);
+		//Dictionary<String, String> dict = new SortedArrayDictionary<>();
+		//testDict(dict);
 	}
 	
 	private static void testHashDictionary() {
-		Dictionary<String, String> dict = new HashDictionary<>(3);
-		testDict(dict);
+		//Dictionary<String, String> dict = new HashDictionary<>(3);
+		//testDict(dict);
 	}
 	
 	private static void testBinaryTreeDictionary() {

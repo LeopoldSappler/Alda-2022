@@ -23,6 +23,7 @@ public class SortedArrayDictionary<K extends Comparable<? super K>, V> implement
         }
         return -1;
     }
+
     public V search(K key) {
         int i = searchKey(key);
         if (i >= 0)
@@ -36,8 +37,7 @@ public class SortedArrayDictionary<K extends Comparable<? super K>, V> implement
         if (i == -1)
             return null;
         V r = data[i].getValue();
-        for (int j = i; j < size-1; j++)
-            data[j] = data[j+1];
+        if (size - 1 - i >= 0) System.arraycopy(data, i + 1, data, i, size - 1 - i);
         data[--size] = null;
         return r;
     }

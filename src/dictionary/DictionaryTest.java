@@ -17,14 +17,14 @@ public class DictionaryTest {
 	 */
 	public static void main(String[] args)  {
 		
-		//testSortedArrayDictionary();
+		testSortedArrayDictionary();
 		//testHashDictionary();
-		testBinaryTreeDictionary();
+		//testBinaryTreeDictionary();
 	}
 
 	private static void testSortedArrayDictionary() {
-		//Dictionary<String, String> dict = new SortedArrayDictionary<>();
-		//testDict(dict);
+		Dictionary<String, String> dict = new SortedArrayDictionary<>();
+		testDict(dict);
 	}
 	
 	private static void testHashDictionary() {

@@ -110,7 +110,6 @@ public class BinaryTreeDictionary<K extends Comparable<? super K>, V> implements
         else {
             Node successorParent = currentNode;
             Node successor = minNode(currentNode.right);
-            if ()
 
         }
 

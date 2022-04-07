@@ -35,7 +35,9 @@ public class DictionaryUserInput {
                     break;
                 case "s":
                     if (answerArgs.length == 2) {
-                        System.out.println("Englisches Wort fuer: " + answerArgs[1] + " -- " + dict.search(answerArgs[1]));
+                        if (dict.search(answerArgs[1]) != null)
+                            System.out.println("English word for: " + answerArgs[1] + " -- " + dict.search(answerArgs[1]));
+                        else System.err.println(answerArgs[1] + " is not in the dictionary!");
                     } else System.err.println("Wrong input.. 1 argument required.");
                     break;
                 case "i":
@@ -53,6 +55,7 @@ public class DictionaryUserInput {
                 case "exit":
                 default:
                     exit = true;
+                    System.out.println("Exiting...");
                     break;
             }
         }
@@ -67,7 +70,7 @@ public class DictionaryUserInput {
                 System.out.println("Created new " + s + ".");
             }
             case "HashDictionary" -> {
-                dict = new HashDictionaryTest<>();
+                dict = new HashDictionary<>(3);
                 System.out.println("Created new " + s + ".");
             }
             case "BinaryTreeDictionary" -> {

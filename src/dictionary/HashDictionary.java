@@ -131,7 +131,7 @@ public class HashDictionary<K, V> implements Dictionary <K,V> {
             }
             last.next = new Node<K, V>(key, value, null);
             if (load > loadFactor) {
-                System.out.println("resize");
+                //System.out.println("resize");
                 resizeArray();
             }
         }

@@ -236,14 +236,14 @@ public class DictionaryTimeTest {
         }
         startTime = System.currentTimeMillis();
         for (String s : list8knotfound) {
-            dict3.search(s);
+            dict5.search(s);
         }
         endTime = System.currentTimeMillis();
         System.out.println("HashDictionary: Nicht erfolgreiches Suchen für 8000 Einträge = " + (endTime - startTime) + "ms");
 
         startTime = System.currentTimeMillis();
         for (String s : list16knotfound) {
-            dict4.search(s);
+            dict6.search(s);
         }
         endTime = System.currentTimeMillis();
         System.out.println("HashArrayDictionary: Nicht erfolgreiches Suchen für 16000 Einträge = " + (endTime - startTime) + "ms");

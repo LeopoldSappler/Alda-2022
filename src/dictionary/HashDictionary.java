@@ -5,7 +5,7 @@ import java.util.Iterator;
 
 public class HashDictionary<K, V> implements Dictionary <K,V> {
 
-    private static int loadFactor = 2;
+    private static final int loadFactor = 2;
 
     static private class Entry<K, V> {
         public K key;
@@ -22,7 +22,7 @@ public class HashDictionary<K, V> implements Dictionary <K,V> {
         public V value;
         public Node<K, V> next;
 
-        public Node(K key, V value, Node next) {
+        public Node(K key, V value, Node<K, V> next) {
             this.key = key;
             this.value = value;
             this.next = next;
@@ -46,8 +46,6 @@ public class HashDictionary<K, V> implements Dictionary <K,V> {
             if (num % i == 0) {
                 num++;
                 i = 2;
-            } else {
-                continue;
             }
         }
         return num;
@@ -65,9 +63,7 @@ public class HashDictionary<K, V> implements Dictionary <K,V> {
             while (first.next != null && !first.key.equals(key)) {
                 first = first.next;
             }
-            if (first != null)
-                return first.value;
-            else return null;
+            return first.value;
         }
     }
 
@@ -77,8 +73,8 @@ public class HashDictionary<K, V> implements Dictionary <K,V> {
 
         // reuse iterator
         int tempEntriesPos = 0;
-        for (Iterator<Dictionary.Entry<K, V>> it = iterator(); it.hasNext(); ) {
-            tempEntryArray[tempEntriesPos++] = it.next();
+        for (Dictionary.Entry<K, V> entry : this) {
+            tempEntryArray[tempEntriesPos++] = entry;
         }
 
         // clean up
@@ -121,7 +117,7 @@ public class HashDictionary<K, V> implements Dictionary <K,V> {
             }
             last.next = new Node<K, V>(key, value, null);
             if (load > loadFactor) {
-                //System.out.println("resize");
+                //Resizing
                 resizeArray();
             }
         }

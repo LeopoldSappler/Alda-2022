@@ -10,6 +10,7 @@ public class SortedArrayDictionary<K extends Comparable<? super K>, V> implement
     private int size;
     private Entry<K, V>[] data;
 
+    @SuppressWarnings("unchecked")
     public SortedArrayDictionary() {
         this.size = 0;
         data = new Entry[DEF_CAPACITY];
@@ -52,14 +53,14 @@ public class SortedArrayDictionary<K extends Comparable<? super K>, V> implement
         }
 
         if (data.length == size) {
-            data = Arrays.copyOf(data, 2*size);
+            data = Arrays.copyOf(data, 2 * size);
         }
-        int j = size-1;
+        int j = size - 1;
         while (j >= 0 && key.compareTo(data[j].getKey()) < 0) {
-            data[j+1] = data[j];
+            data[j + 1] = data[j];
             j--;
         }
-        data[j+1] = new Entry<K,V>(key,value);
+        data[j + 1] = new Entry<>(key, value);
         size++;
         return null;
     }

@@ -42,6 +42,28 @@ public class SortedArrayDictionary<K extends Comparable<? super K>, V> implement
         return r;
     }
 
+    public V insert(K key, V value) {
+        int i = searchKey(key);
+
+        if (i != -1) {
+            V r = data[i].getValue();
+            data[i].setValue(value);
+            return r;
+        }
+
+        if (data.length == size) {
+            data = Arrays.copyOf(data, 2*size);
+        }
+        int j = size-1;
+        while (j >= 0 && key.compareTo(data[j].getKey()) < 0) {
+            data[j+1] = data[j];
+            j--;
+        }
+        data[j+1] = new Entry<K,V>(key,value);
+        size++;
+        return null;
+    }
+
     @Override
     public int size() {
         return size;
@@ -69,27 +91,5 @@ public class SortedArrayDictionary<K extends Comparable<? super K>, V> implement
                 throw new UnsupportedOperationException();
             }
         };
-    }
-
-    public V insert(K key, V value) {
-        int i = searchKey(key);
-
-        if (i != -1) {
-            V r = data[i].getValue();
-            data[i].setValue(value);
-            return r;
-        }
-
-        if (data.length == size) {
-            data = Arrays.copyOf(data, 2*size);
-        }
-        int j = size-1;
-        while (j >= 0 && key.compareTo(data[j].getKey()) < 0) {
-            data[j+1] = data[j];
-            j--;
-        }
-        data[j+1] = new Entry<K,V>(key,value);
-        size++;
-        return null;
     }
 }

@@ -19,7 +19,7 @@ public class DictionaryTest {
 		
 		testSortedArrayDictionary();
 		testHashDictionary();
-		//testBinaryTreeDictionary();
+		testBinaryTreeDictionary();
 	}
 
 	private static void testSortedArrayDictionary() {

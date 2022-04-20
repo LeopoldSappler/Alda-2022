@@ -1,5 +1,4 @@
 # Alda
 Algorithmen und Datenstrukturen SS2022
 
-Dictionary Laufzeiten:
-![Laufzeitmessung](https://user-images.githubusercontent.com/89982382/162196656-bd10f3ea-8ba6-421f-bd62-12eaa65a137f.jpg)
+![Untitled](https://user-images.githubusercontent.com/89982382/164244579-5f0c391c-5f54-4fab-81b1-891dad41c4f7.jpg)

@@ -84,7 +84,7 @@ public class BinaryTreeDictionary<K extends Comparable<? super K>, V> implements
             else
                 currentNode = rotateLeftRight(currentNode);
         }
-        else if (getBalance(currentNode) == +2) {
+        else if (getBalance(currentNode) == 2) {
             if (getBalance(currentNode.right) >= 0)
                 currentNode = rotateLeft(currentNode);
             else
@@ -225,7 +225,7 @@ public class BinaryTreeDictionary<K extends Comparable<? super K>, V> implements
 
     @Override
     public Iterator<Entry<K, V>> iterator() {
-        return new Iterator<Entry<K, V>>() {
+        return new Iterator<>() {
             private boolean init = true;
             ArrayList<Entry<K, V>> inOrderArray = new ArrayList<>();
             int counter = 0;

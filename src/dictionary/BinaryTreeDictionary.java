@@ -1,10 +1,7 @@
-// O. Bittel
-// 22.02.2017
 package dictionary;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 
 /**
  * Implementation of the Dictionary interface as AVL tree.
@@ -13,7 +10,7 @@ import java.util.NoSuchElementException;
  * or by a Comparator provided at set creation time, depending on which constructor is used. 
  * <p>
  * An iterator for this dictionary is implemented by using the parent node reference.
- * 
+ *
  * @param <K> Key.
  * @param <V> Value.
  */
@@ -36,7 +33,7 @@ public class BinaryTreeDictionary<K extends Comparable<? super K>, V> implements
             parent = null;
         }
     }
-    
+
     private Node<K, V> root = null;
     private V tempValue;
     private int size = 0;
@@ -55,17 +52,17 @@ public class BinaryTreeDictionary<K extends Comparable<? super K>, V> implements
             currentNode = new Node<>(key, value);
             tempValue = null;
 
-        // Einzusetzende Node kleiner als currentNode
+            // Einzusetzende Node kleiner als currentNode
         } else if (key.compareTo(currentNode.key) < 0) {
             currentNode.left = insertRecursive(currentNode.left, key, value);
             currentNode.left.parent = currentNode;
 
-        // Einzusetzende Node groesser als currentNode
+            // Einzusetzende Node groesser als currentNode
         } else if (key.compareTo(currentNode.key) > 0) {
             currentNode.right = insertRecursive(currentNode.right, key, value);
             currentNode.right.parent = currentNode;
 
-        // Value existiert schon im Tree
+            // Value existiert schon im Tree
         } else {
             tempValue = currentNode.value;
             currentNode.value = value;
@@ -154,11 +151,11 @@ public class BinaryTreeDictionary<K extends Comparable<? super K>, V> implements
         if (key.compareTo(currentNode.key) < 0) {
             return searchRecursive(currentNode.left, key);
 
-        // Der gesuchte Key ist groesser als currentNode.key
+            // Der gesuchte Key ist groesser als currentNode.key
         } else if (key.compareTo(currentNode.key) > 0) {
             return searchRecursive(currentNode.right, key);
 
-        // Gesuchter Key == currentNode.key, gebe Value zurueck
+            // Gesuchter Key == currentNode.key, gebe Value zurueck
         } else {
             return currentNode.value;
         }
@@ -178,7 +175,7 @@ public class BinaryTreeDictionary<K extends Comparable<? super K>, V> implements
         if (currentNode == null)
             tempValue = null;
 
-        // Zur Node navigieren die entfernt werden soll
+            // Zur Node navigieren die entfernt werden soll
         else if (key.compareTo(currentNode.key) < 0) {
             currentNode.left = removeRecursive(currentNode.left, key);
         } else if (key.compareTo(currentNode.key) > 0) {
@@ -282,9 +279,9 @@ public class BinaryTreeDictionary<K extends Comparable<? super K>, V> implements
     }
 
     /**
-	 * Pretty prints the tree
-	 */
-	public void prettyPrint() {
+     * Pretty prints the tree
+     */
+    public void prettyPrint() {
         printR(0, root);
     }
 

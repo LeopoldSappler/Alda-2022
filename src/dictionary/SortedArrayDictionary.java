@@ -17,11 +17,16 @@ public class SortedArrayDictionary<K extends Comparable<? super K>, V> implement
     }
 
     private int searchKey(K key) {
-        //TODO: Binäre Suche
-        for (int i = 0; i < size; i++) {
-            if (data[i].getKey().equals(key)) {
-                return i;
-            }
+        int li = 0;
+        int re = size - 1;
+        while (re >= li) {
+            int m = (li + re) / 2;
+            if (key.compareTo(data[m].getKey()) < 0)
+                re = m - 1;
+            else if (key.compareTo(data[m].getKey()) > 0)
+                li = m + 1;
+            else
+                return m;
         }
         return -1;
     }

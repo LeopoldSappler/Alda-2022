@@ -41,6 +41,7 @@ public class BinaryTreeDictionary<K extends Comparable<? super K>, V> implements
     @Override
     public V insert(K key, V value) {
         root = insertRecursive(root, key, value);
+        root.parent = null;
         if (tempValue == null)
             size++;
         return tempValue;
@@ -98,9 +99,7 @@ public class BinaryTreeDictionary<K extends Comparable<? super K>, V> implements
             currentNode.left.parent = currentNode;
         }
         q.right = currentNode;
-        if(currentNode.right != null){
-            q.right.parent = q;
-        }
+        q.right.parent = q;
         //q.parent = null;
         currentNode.height = Math.max(getHeight(currentNode.left), getHeight(currentNode.right)) + 1;
         q.height = Math.max(getHeight(q.left), getHeight(q.right)) + 1;
@@ -115,9 +114,7 @@ public class BinaryTreeDictionary<K extends Comparable<? super K>, V> implements
             currentNode.right.parent = currentNode;
         }
         q.left = currentNode;
-        if(currentNode.left != null) {
-            q.left.parent = q;
-        }
+        q.left.parent = q;
         //q.parent = null;
         currentNode.height = Math.max(getHeight(currentNode.right), getHeight(currentNode.left)) + 1;
         q.height = Math.max(getHeight(q.right), getHeight(q.left)) + 1;
@@ -127,12 +124,14 @@ public class BinaryTreeDictionary<K extends Comparable<? super K>, V> implements
     private Node<K,V> rotateLeftRight(Node<K,V> currentNode) {
         assert currentNode.left != null;
         currentNode.left = rotateLeft(currentNode.left);
+        currentNode.left.parent = currentNode;
         return rotateRight(currentNode);
     }
 
     private Node<K,V> rotateRightLeft(Node<K,V> currentNode) {
         assert currentNode.right != null;
         currentNode.right = rotateRight(currentNode.right);
+        currentNode.right.parent = currentNode;
         return rotateLeft(currentNode);
     }
 
@@ -164,6 +163,8 @@ public class BinaryTreeDictionary<K extends Comparable<? super K>, V> implements
     @Override
     public V remove(K key) {
         root = removeRecursive(root, key);
+        if (root != null)
+            root.parent = null;
         if (tempValue != null)
             size--;
         return tempValue;
@@ -178,8 +179,12 @@ public class BinaryTreeDictionary<K extends Comparable<? super K>, V> implements
             // Zur Node navigieren die entfernt werden soll
         else if (key.compareTo(currentNode.key) < 0) {
             currentNode.left = removeRecursive(currentNode.left, key);
+            if (currentNode.left != null)
+                currentNode.left.parent = currentNode;
         } else if (key.compareTo(currentNode.key) > 0) {
             currentNode.right = removeRecursive(currentNode.right, key);
+            if (currentNode.right != null)
+                currentNode.right.parent = currentNode;
         }
 
         // Entfernen der Node, wenn mindestens eins der Children null ist
@@ -199,10 +204,15 @@ public class BinaryTreeDictionary<K extends Comparable<? super K>, V> implements
 
             // aktuelle Node wird durch kleinsten
             // Key im rechten Subtree von currentNode ersetzt
-            currentNode = minNode(currentNode.right);
+            Node<K, V> minNode = minNode(currentNode.right);
+
+            currentNode.key = minNode.key;
+            currentNode.value = minNode.value;
 
             // Entfernen von der successorNode
             currentNode.right = removeRecursive(currentNode.right, currentNode.key);
+            if (currentNode.right != null)
+                currentNode.right.parent = currentNode;
         }
 
         currentNode = balance(currentNode);

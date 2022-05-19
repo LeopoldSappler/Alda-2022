@@ -5,10 +5,7 @@ package graph;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Map;
-import java.util.Scanner;
-import java.util.Set;
-import java.util.TreeMap;
+import java.util.*;
 
 /**
  * Klasse für Bestimmung aller strengen Komponenten.
@@ -27,6 +24,8 @@ public class StrongComponents<V> {
     // Component 3: 4,
 
 	private final Map<Integer,Set<V>> comp = new TreeMap<>();
+	private Set<V> visited = new TreeSet<>();
+	private int componentIndex = 0;
 	
 	/**
 	 * Ermittelt alle strengen Komponenten mit
@@ -34,9 +33,42 @@ public class StrongComponents<V> {
 	 * @param g gerichteter Graph.
 	 */
 	public StrongComponents(DirectedGraph<V> g) {
-		// ...
+		ks(g);
 	}
-	
+
+	public void ks(DirectedGraph<V> g) {
+		List<V> pi = invertedPostOrder(g);
+		DirectedGraph<V> gi = g.invert();
+
+		for (V v : pi) {
+			if (!visited.contains(v)) {
+				comp.put(componentIndex, new TreeSet<>());
+				comp.get(componentIndex).add(v);
+				visited.add(v);
+				ksR(v, gi, componentIndex);
+				componentIndex++;
+			}
+		}
+	}
+
+	public void ksR(V v, DirectedGraph<V> g, int counter_teilbaum) {
+		for (var p : g.getSuccessorVertexSet(v)) {
+			if (!visited.contains(p)) {
+				comp.get(counter_teilbaum).add(p);
+				visited.add(p);
+				ksR(p, g, counter_teilbaum);
+			}
+		}
+	}
+
+	private List<V> invertedPostOrder(DirectedGraph<V> g) {
+		DepthFirstOrder<V> dfo = new DepthFirstOrder<>(g);
+		List<V> postOrderList = new LinkedList<>(dfo.postOrder());
+		Collections.reverse(postOrderList);
+		return postOrderList;
+	}
+
+
 	/**
 	 * 
 	 * @return Anzahl der strengen Komponeneten.
@@ -47,7 +79,14 @@ public class StrongComponents<V> {
 
 	@Override
 	public String toString() {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		StringBuilder sb = new StringBuilder();
+		for (var v : comp.entrySet()) {
+			sb.append("Component ").append(v.getKey()).append(" : ");
+			for (var e : v.getValue())
+				sb.append(e.toString()).append(", ");
+			sb.append("\n");
+		}
+		return sb.toString();
 	}
 	
 	/**
@@ -99,7 +138,7 @@ public class StrongComponents<V> {
 	}
 	
 	private static void test2() throws FileNotFoundException {
-		DirectedGraph<Integer> g = readDirectedGraph(new File("mediumDG.txt"));
+		DirectedGraph<Integer> g = readDirectedGraph(new File("C:\\Users\\lsl\\IdeaProjects\\Alda-2022\\src\\graph\\mediumDG.txt"));
 		System.out.println(g.getNumberOfVertexes());
 		System.out.println(g.getNumberOfEdges());
 		System.out.println(g);

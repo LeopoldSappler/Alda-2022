@@ -51,12 +51,12 @@ public class StrongComponents<V> {
 		}
 	}
 
-	public void ksR(V v, DirectedGraph<V> g, int counter_teilbaum) {
+	public void ksR(V v, DirectedGraph<V> g, int componentIndex) {
 		for (var p : g.getSuccessorVertexSet(v)) {
 			if (!visited.contains(p)) {
-				comp.get(counter_teilbaum).add(p);
+				comp.get(componentIndex).add(p);
 				visited.add(p);
-				ksR(p, g, counter_teilbaum);
+				ksR(p, g, componentIndex);
 			}
 		}
 	}

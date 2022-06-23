@@ -1,16 +1,13 @@
 package shortestPath;
 
-import directedGraph.*;
+import graph.*;
 import java.io.FileNotFoundException;
 import sim.SYSimulation;
 import java.awt.Color;
 import java.io.IOException;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 
 /**
@@ -36,9 +33,35 @@ public class ScotlandYard {
 	public static DirectedGraph<Integer> getGraph() throws FileNotFoundException {
 
 		DirectedGraph<Integer> sy_graph = new AdjacencyListDirectedGraph<>();
-		Scanner in = new Scanner(new File("ScotlandYard_Kanten.txt"));
+		Scanner in = new Scanner(new File("src/shortestPath/ScotlandYard_Kanten.txt"));
 
-		// ...
+		while (in.hasNextLine()) {
+			String line = in.nextLine();
+			String[] input = line.split("\s");
+			int u = Integer.parseInt(input[0]);
+			int v = Integer.parseInt(input[1]);
+			String transport = input[2];
+			int distance = 0;
+			int oldDistance;
+			sy_graph.addVertex(u);
+			sy_graph.addVertex(v);
+
+			switch (transport) {
+				case "Taxi" -> distance = 2;
+				case "Bus" -> distance = 3;
+				case "UBahn" -> distance = 5;
+			}
+
+			if (sy_graph.containsEdge(u, v)) {
+				oldDistance = (int) sy_graph.getWeight(u, v);
+				if (oldDistance < distance)
+					distance = oldDistance;
+			}
+
+			sy_graph.addEdge(u, v, distance);
+			sy_graph.addEdge(v, u, distance);
+
+		}
 		
 		// Test, ob alle Kanten eingelesen wurden: 
 		System.out.println("Number of Vertices:       " + sy_graph.getNumberOfVertexes());	// 199
@@ -116,7 +139,7 @@ public class ScotlandYard {
 		int a = -1;
 		for (int b : sp) {
 			if (a != -1)
-			sim.drive(a, b, Color.RED.darker());
+				sim.drive(a, b, Color.RED.darker());
 			sim.visitStation(b);
 			a = b;
 		}
@@ -141,12 +164,21 @@ class ScotlandYardHeuristic implements Heuristic<Integer> {
 	}
 
 	public ScotlandYardHeuristic() throws FileNotFoundException {
-		// ...
+		coord = new TreeMap<>();
+		Scanner in = new Scanner(new File("src/shortestPath/ScotlandYard_Knoten.txt"));
+		while (in.hasNextLine()) {
+			String[] input = in.nextLine().split("([\t|\s])+");
+			int x = Integer.parseInt(input[1]);
+			int y = Integer.parseInt(input[2]);
+			coord.put(Integer.parseInt(input[0]), new Point(x, y));
+		}
 	}
 
 	public double estimatedCost(Integer u, Integer v) {
-		// ...
-		return 0.0;
+		Point p1 = coord.get(u);
+		Point p2 = coord.get(v);
+		double factor = 1.0 / 30.0;
+		return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2)) * factor;
 	}
 }
 
